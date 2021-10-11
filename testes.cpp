@@ -8,11 +8,26 @@
 
 #include <vector>
 
+#include <chrono>
+
+
 using namespace std;
 
-int compararTempos(time_t tempo1, time_t tempo2) {
+int compararTempos(time_t tempo1, time_t tempo2, int mili1, int mili2) {
         //diferenca entre tempo1 e tempo 2
-        return difftime(tempo1, tempo2) > 0.0 ? 1 : -1;
+        
+        int diferencaMili = (mili1 - mili2);
+        double diferenca = difftime(tempo1, tempo2);
+        if (diferenca != 0.0 ) {
+        	return diferenca > 0.0 ? 1 : -1;
+        } else {
+        	if (diferencaMili > 0) {
+        		return 1;
+        	} else {
+        		return -1;
+        	}
+        } 
+        
 }
 
 int main(void) {
@@ -36,6 +51,7 @@ int main(void) {
         struct tm * timeptr, tm1, tm2;
         string lastTime;
         string currentTime;
+        int lastMili, currentMili;
         vector < int > comparacaoTempos;
 	//--------------Analise de log dos processos----------------//
 	
@@ -44,6 +60,7 @@ int main(void) {
         	//iterando linhas de log de processos
                 if (i > 0) {
                         lastTime = currentTime;
+                        lastMili = currentMili;
                 }
                 
                 linhas += 1;
@@ -55,9 +72,15 @@ int main(void) {
                 numeroDeEscritas[stoi(id)] += 1;
                 pos = linha.find(delimiter);
                 linha.erase(0, pos + delimiter.length() + 1);
-
-                currentTime = linha;
-
+                
+                //tratando miliseconds
+                string copiaLinha = linha;
+                currentMili = stoi(copiaLinha.substr(copiaLinha.find(".") + 1, copiaLinha.length() + 1));
+                
+                currentTime = linha.substr(0, linha.find("."));
+                
+                
+                
                 if (i > 0) {
 
                         //comparacao de tempos de linhas consecutivas
@@ -66,9 +89,10 @@ int main(void) {
 
                         t1 = mktime( & tm1);
                         t2 = mktime( & tm2);
+                        
 
 			//resultado de compararTempos em vetor
-                        comparacaoTempos.push_back(compararTempos(t2, t1));
+                        comparacaoTempos.push_back(compararTempos(t2, t1, currentMili, lastMili));
 
                 }
 

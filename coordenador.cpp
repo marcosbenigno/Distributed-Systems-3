@@ -101,6 +101,7 @@ void writeLog(string entrada) {
         oss << entrada;
         auto str = oss.str();
         outfile << str << endl;
+        outfile.close();
 }
 
 
@@ -361,6 +362,12 @@ void * interface(void * intervalo) {
 }
 
 int main() {
+
+	//limpando log de coordenador
+	ofstream file;
+	file.open("log_coordenador.txt", ofstream::out | ofstream::trunc);
+	file.close();
+	
         //inicializacao de semaforo
         sem_init( & semaforo, 0, 1);
         sem_init( & semaforoFilaProcessosAInicializar, 0, 1);
