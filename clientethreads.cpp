@@ -44,6 +44,8 @@
 
 using namespace std;
 
+// testado no ubuntu
+
 //struct para passar argumentos para threads criadoras de processos 
 struct Argumentos {
         int id;
@@ -107,7 +109,8 @@ void * funcao(void * argumentos) {
                 //informacao de socket servidor
                 servaddr.sin_family = AF_INET;
                 servaddr.sin_port = htons(PORT);
-                servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+                servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+                
 
                 int n;
                 socklen_t len;
@@ -164,7 +167,7 @@ void * funcao(void * argumentos) {
                                 
                                 outfile << meuId << ": " << str << endl;
                                 outfile.close();
-                                
+                               
                                 cout <<"Processo "<<meuId<<" escreveu: "<< str << endl;
                                 sleep(processoInfo -> segundos);
                                 

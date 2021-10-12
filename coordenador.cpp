@@ -37,6 +37,8 @@
 #define PORT 4444
 
 
+//testado no ubuntu
+
 //fila
 //array de conectados
 
