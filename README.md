@@ -3,5 +3,5 @@ In this repository, can be found the source code of programs which focus on mult
 ## Running
 You can execute the poject using:
 ```sh
-g++ name.c -o name
+g++ -pthread name.cpp -o name
 ```
